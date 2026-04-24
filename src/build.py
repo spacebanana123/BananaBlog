@@ -37,8 +37,6 @@ def buildMainPagePost(post):
 				line = line.replace("##", "<h3>")
 				line = line.replace("\n", "</h3>")
 				outputText += line
-			elif line.startswith("//"):
-				date = line.replace("//", "")
 			else:
 				line = "<p>" + line
 				line = line.replace("\n", "</p>")
@@ -60,8 +58,6 @@ def buildDedicatedPage(post):
 				line = line.replace("##", "<h3>")
 				line = line.replace("\n", "</h3>")
 				outputText += line
-			elif line.startswith("//"):
-				date = line.replace("//", "")
 			else:
 				line = "<p>" + line
 				line = line.replace("\n", "</p>")
@@ -77,10 +73,13 @@ def cleanup():
 		shutil.rmtree(TEMP_DIR)
 
 def main():
-	if not os.path.exists(PUBLIC_DIR):
-		os.makedirs(PUBLIC_DIR)
+	if os.path.exists(TEMP_DIR):
+		shutil.rmtree(TEMP_DIR)
+	if os.path.exists(PUBLIC_DIR):
+		shutil.rmtree(PUBLIC_DIR)
+	os.makedirs(PUBLIC_DIR)
 
-	for file in os.listdir(BLOG_DIR):
+	for file in sorted(os.listdir(BLOG_DIR), reverse=True):
 		if file.endswith(".md"):
 			buildMainPagePost(file)
 			buildDedicatedPage(file)
