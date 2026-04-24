@@ -33,6 +33,12 @@ def buildMainPagePost(post):
 				line = line.replace("#", "<h2><a href='" + post.replace(".md", ".html") + "'>")
 				line = line.replace("\n", "</a></h2>")
 				outputText += line
+			elif line.startswith("##"):
+				line = line.replace("##", "<h3>")
+				line = line.replace("\n", "</h3>")
+				outputText += line
+			elif line.startswith("//"):
+				date = line.replace("//", "")
 			else:
 				line = "<p>" + line
 				line = line.replace("\n", "</p>")
@@ -50,6 +56,12 @@ def buildDedicatedPage(post):
 				line = line.replace("#", "<h2><a href='" + post.replace(".md", ".html") + "'>")
 				line = line.replace("\n", "</a></h2>")
 				outputText += line
+			elif line.startswith("##"):
+				line = line.replace("##", "<h3>")
+				line = line.replace("\n", "</h3>")
+				outputText += line
+			elif line.startswith("//"):
+				date = line.replace("//", "")
 			else:
 				line = "<p>" + line
 				line = line.replace("\n", "</p>")
@@ -65,6 +77,9 @@ def cleanup():
 		shutil.rmtree(TEMP_DIR)
 
 def main():
+	if not os.path.exists(PUBLIC_DIR):
+		os.makedirs(PUBLIC_DIR)
+
 	for file in os.listdir(BLOG_DIR):
 		if file.endswith(".md"):
 			buildMainPagePost(file)
