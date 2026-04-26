@@ -5,6 +5,7 @@ import shutil
 SRC_DIR = os.path.dirname(os.path.abspath(__file__))
 ROOT_DIR = os.path.dirname(SRC_DIR)
 BLOG_DIR = os.path.join(ROOT_DIR, 'blog')
+FAQ_DIR = os.path.join(ROOT_DIR, 'faq')
 PUBLIC_DIR = os.path.join(ROOT_DIR, 'public')
 TEMPLATE_DIR = os.path.join(SRC_DIR, 'templates')
 TEMP_DIR = os.path.join(os.path.curdir, 'temp')
@@ -45,9 +46,32 @@ def buildMainPagePost(post):
 	insertion(outputText)
 	return outputText
 
-def buildDedicatedPage(post):
+def buildFAQPage(post):
 	outputText = "<div>"
-	with open(os.path.join(BLOG_DIR, post), "r") as f:
+	with open(os.path.join(FAQ_DIR, post), "r") as f:
+		for line in f:
+			if line.startswith("#"):
+				line = line.replace("#", "<h2><a href='" + post.replace(".md", ".html") + "'>")
+				line = line.replace("\n", "</a></h2>")
+				outputText += line
+			elif line.startswith("##"):
+				line = line.replace("##", "<h3>")
+				line = line.replace("\n", "</h3>")
+				outputText += line
+			else:
+				line = "<p>" + line
+				line = line.replace("\n", "</p>")
+				outputText += line
+	outputText += "</div>"
+	insertion(outputText, file="faq.html", out="faq.html")
+	return outputText
+
+def buildDedicatedPage(post, faq=False):
+	outputText = "<div>"
+	filePath = os.path.join(BLOG_DIR, post)
+	if faq:
+		filePath = os.path.join(FAQ_DIR, post)
+	with open(filePath, "r") as f:
 		for line in f:
 			if line.startswith("#"):
 				title = line.replace("#", "")
@@ -83,6 +107,11 @@ def main():
 		if file.endswith(".md"):
 			buildMainPagePost(file)
 			buildDedicatedPage(file)
+
+	for file in sorted(os.listdir(FAQ_DIR)):
+		if file.endswith(".md"):
+			buildFAQPage(file)
+			buildDedicatedPage(file, faq=True)
 	
 	shutil.copy(os.path.join(TEMPLATE_DIR, "style.css"), PUBLIC_DIR)
 
