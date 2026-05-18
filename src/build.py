@@ -115,6 +115,9 @@ def main():
 	
 	shutil.copy(os.path.join(TEMPLATE_DIR, "style.css"), PUBLIC_DIR)
 
+	for file in os.listdir(os.path.join(SRC_DIR, "static")):
+		shutil.copy(os.path.join(SRC_DIR, "static", file), PUBLIC_DIR)
+
 	for file in os.listdir(TEMP_DIR):
 		if file.endswith(".html"):
 			shutil.copy(os.path.join(TEMP_DIR, file), PUBLIC_DIR)
