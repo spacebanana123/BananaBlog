@@ -1,6 +1,6 @@
 import os
 import shutil
-
+import libopensonic
 
 # --- Configuration ---
 SRC_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -28,7 +28,7 @@ def insertion(text, file = "index.html", out = "index.html", target = "<!--INSER
 		f.write(data)
 	
 def buildMainPagePost(post):
-	outputText = "<div>" + os.environ["bananaBlogPassword"]
+	outputText = "<div>"
 	with open(os.path.join(BLOG_DIR, post), "r") as f:
 		for line in f:
 			if line.startswith("#"):
@@ -99,6 +99,33 @@ def buildDedicatedPage(post, faq=False):
 	insertion(outputText,file="dedicated.html",out=post.replace(".md", ".html"))
 	return outputText
 
+def getPlaylist():
+
+	# We pass in the base url, the username, password, and port number
+	# Be sure to use https:// if this is an ssl connection!
+	conn = libopensonic.Connection(os.environ["navidromeServer"] ,  + os.environ["User"] , 
+		 + os.environ["bananaBlogPassword"] , port=443)
+	# Let's get 2 completely random songs
+	playlists = conn.get_playlists()
+	# We'll just pretty print the results we got to the terminal
+	reviewedID = ""
+	studyID = ""
+	for pl in playlists:
+		if pl.name == "Reviewed":
+			reviewedID = pl.id
+		if pl.name == "Study":
+			studyID = pl.id
+
+	reviewedPlaylist = "#EXTM3U\n#PLAYLIST:Reviewed\n"
+
+	for song in conn.get_playlist(reviewedID).entry:
+		reviewedPlaylist += f"#EXTINF: {song.duration},{song.artist} - {song.title}\n"
+		
+	songPlaylist = "#EXTM3U\n#PLAYLIST:Study\n"
+
+	for song in conn.get_playlist(studyID).entry:
+		songPlaylist += f"#EXTINF: {song.duration},{song.artist} - {song.title}\n"
+		
 
 def cleanup():
 	if os.path.exists(TEMP_DIR):
