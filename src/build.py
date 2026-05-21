@@ -19,7 +19,7 @@ def insertion(text, file = "index.html", out = "index.html", target = "<!--INSER
 			shutil.copy(os.path.join(TEMPLATE_DIR, file), os.path.join(TEMP_DIR, out))
 
 	#Replace <!--INSERTION POINT--> with the text and then add a new insertion point above <!--END POINT-->
-	with open(os.path.join(TEMP_DIR, out), "r+") as f:
+	with open(os.path.join(TEMP_DIR, out), "r+", encoding="utf-8") as f:
 		data = f.read()
 		data = data.replace(target, text)
 		if(end != ""):
@@ -65,6 +65,11 @@ def buildFAQPage(post):
 				outputText += line
 	outputText += "</div>"
 	insertion(outputText, file="faq.html", out="faq.html")
+	if post.startswith("playlist"):
+		reviewed = getPlaylist()[0]
+		study = getPlaylist()[1]
+		insertion(reviewed,file="faq.html",out="faq.html", target="<!--Review playlist-->", end="")
+		insertion(study,file="faq.html",out="faq.html", target="<!--Saved playlist-->", end="")
 	return outputText
 
 def buildDedicatedPage(post, faq=False):
@@ -96,9 +101,12 @@ def buildDedicatedPage(post, faq=False):
 				outputText += line
 	outputText += "</div>"
 	insertion(title,file="dedicated.html",out=post.replace(".md", ".html"), target="<!--TITLE-->", end="")
-	insertion(getPlaylist()[0],file="dedicated.html",out=post.replace("md", ".html"), target="<!--Review playlist-->", end="")
-	insertion(getPlaylist()[1],file="dedicated.html",out=post.replace("md", ".html"), target="<!--Saved playlist-->", end="")
 	insertion(outputText,file="dedicated.html",out=post.replace(".md", ".html"))
+	if faq and post.startswith("playlist"):
+		reviewed = getPlaylist()[0]
+		study = getPlaylist()[1]
+		insertion(reviewed,file="dedicated.html",out=post.replace(".md", ".html"), target="<!--Review playlist-->", end="")
+		insertion(study,file="dedicated.html",out=post.replace(".md", ".html"), target="<!--Saved playlist-->", end="")
 	return outputText
 
 def getPlaylist():
@@ -106,7 +114,7 @@ def getPlaylist():
 	# We pass in the base url, the username, password, and port number
 	# Be sure to use https:// if this is an ssl connection!
 	conn = libopensonic.Connection(os.environ["navidromeServer"] , os.environ["User"] , 
-								os.environ["bananaBlogPassword"] , port=443)
+		os.environ["bananaBlogPassword"] , port=443)
 	# Let's get 2 completely random songs
 	playlists = conn.get_playlists()
 	# We'll just pretty print the results we got to the terminal
@@ -136,7 +144,6 @@ def cleanup():
 		shutil.rmtree(TEMP_DIR)
 
 def main():
-	print("Available env vars:", [k for k in os.environ.keys()])
 	if os.path.exists(TEMP_DIR):
 		shutil.rmtree(TEMP_DIR)
 	if os.path.exists(PUBLIC_DIR):
