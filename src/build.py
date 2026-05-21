@@ -121,15 +121,15 @@ def getPlaylist():
 		if pl.name == "Study":
 			studyID = pl.id
 
-	reviewedPlaylist = "#EXTM3U\n#PLAYLIST:Reviewed\n"
+	reviewedPlaylist = "#EXTM3U<br>#PLAYLIST:Reviewed<br>"
 
 	for song in conn.get_playlist(reviewedID).entry:
-		reviewedPlaylist += f"#EXTINF: {song.duration},{song.artist} - {song.title}\n"
+		reviewedPlaylist += f"#EXTINF: {song.duration},{song.artist} - {song.title}<br>"
 		
-	songPlaylist = "#EXTM3U\n#PLAYLIST:Study\n"
+	songPlaylist = "#EXTM3U<br>#PLAYLIST:Study<br>"
 
 	for song in conn.get_playlist(studyID).entry:
-		songPlaylist += f"#EXTINF: {song.duration},{song.artist} - {song.title}\n"
+		songPlaylist += f"#EXTINF: {song.duration},{song.artist} - {song.title}<br>"
 	
 	return (reviewedPlaylist,songPlaylist)
 		
