@@ -105,6 +105,7 @@ def cleanup():
 		shutil.rmtree(TEMP_DIR)
 
 def main():
+	print("Available env vars:", [k for k in os.environ.keys()])
 	if os.path.exists(TEMP_DIR):
 		shutil.rmtree(TEMP_DIR)
 	if os.path.exists(PUBLIC_DIR):
