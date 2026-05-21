@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
-  "name": "my-worker",
+  "name": "bananablog",
   // Set this to today's date
   "compatibility_date": "2026-04-22",
   "build": {
