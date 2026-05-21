@@ -96,6 +96,8 @@ def buildDedicatedPage(post, faq=False):
 				outputText += line
 	outputText += "</div>"
 	insertion(title,file="dedicated.html",out=post.replace(".md", ".html"), target="<!--TITLE-->", end="")
+	insertion(getPlaylist()[0],file="dedicated.html",out=post.replace("md", ".html"), target="<!--Review playlist-->", end="")
+	insertion(getPlaylist()[1],file="dedicated.html",out=post.replace("md", ".html"), target="<!--Saved playlist-->", end="")
 	insertion(outputText,file="dedicated.html",out=post.replace(".md", ".html"))
 	return outputText
 
@@ -125,6 +127,8 @@ def getPlaylist():
 
 	for song in conn.get_playlist(studyID).entry:
 		songPlaylist += f"#EXTINF: {song.duration},{song.artist} - {song.title}\n"
+	
+	return (reviewedPlaylist,songPlaylist)
 		
 
 def cleanup():
