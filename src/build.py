@@ -1,6 +1,7 @@
 import os
 import shutil
 import libopensonic
+from datetime import datetime
 
 # --- Configuration ---
 SRC_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -70,6 +71,7 @@ def buildFAQPage(post):
 		study = getPlaylist()[1]
 		insertion(reviewed,file="faq.html",out="faq.html", target="<!--Review playlist-->", end="")
 		insertion(study,file="faq.html",out="faq.html", target="<!--Saved playlist-->", end="")
+		insertion(datetime.today().strftime('%m-%d-%Y'),file="faq.html",out="faq.html", target="<!--Date-->", end="")
 	return outputText
 
 def buildDedicatedPage(post, faq=False):
@@ -107,11 +109,11 @@ def buildDedicatedPage(post, faq=False):
 		study = getPlaylist()[1]
 		insertion(reviewed,file="dedicated.html",out=post.replace(".md", ".html"), target="<!--Review playlist-->", end="")
 		insertion(study,file="dedicated.html",out=post.replace(".md", ".html"), target="<!--Saved playlist-->", end="")
+		insertion(datetime.today().strftime('%m-%d-%Y'),file="dedicated.html",out=post.replace(".md", ".html"), target="<!--Date-->", end="")
 	return outputText
 
 def getPlaylist():
-	conn = libopensonic.Connection(os.environ["navidromeServer"] , os.environ["User"] , 
-		os.environ["bananaBlogPassword"] , port=443)
+	conn = libopensonic.Connection('https://music.spacebanana.dpdns.org' , 'BananaBlogUser' , 'a66EiJih8pYbcPkApCTe' , port=443)
 	playlists = conn.get_playlists()
 	reviewedID = ""
 	studyID = ""
