@@ -71,14 +71,17 @@ def buildDedicatedPage(post, faq=False):
 	filePath = os.path.join(BLOG_DIR, post)
 	if faq:
 		filePath = os.path.join(FAQ_DIR, post)
+	bypass = False
 	with open(filePath, "r") as f:
 		for line in f:
-			if line.startswith("#"):
+			if line.startswith("bypass=true"):
+				bypass = True
+			elif not bypass and line.startswith("# "):
 				title = line.replace("#", "")
 				line = line.replace("#", "<h2><a href='" + post.replace(".md", ".html") + "'>")
 				line = line.replace("\n", "</a></h2>")
 				outputText += line
-			elif line.startswith("##"):
+			elif not bypass and line.startswith("## "):
 				line = line.replace("##", "<h3>")
 				line = line.replace("\n", "</h3>")
 				outputText += line
