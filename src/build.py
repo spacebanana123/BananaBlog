@@ -28,7 +28,7 @@ def insertion(text, file = "index.html", out = "index.html", target = "<!--INSER
 		f.write(data)
 	
 def buildMainPagePost(post):
-	outputText = "<div>" + os.environ.get('BananaBlogPassword')
+	outputText = "<div>" + os.environ["bananaBlogPassword"]
 	with open(os.path.join(BLOG_DIR, post), "r") as f:
 		for line in f:
 			if line.startswith("#"):
