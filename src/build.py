@@ -76,7 +76,7 @@ def buildDedicatedPage(post, faq=False):
 		for line in f:
 			if line.startswith("bypass=true"):
 				bypass = True
-			if line.startswith("bypass=false"):
+			elif line.startswith("bypass=false"):
 				bypass = False
 			elif not bypass and line.startswith("# "):
 				title = line.replace("#", "")
