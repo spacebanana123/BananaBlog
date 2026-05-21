@@ -1,6 +1,7 @@
 import os
 import shutil
 
+
 # --- Configuration ---
 SRC_DIR = os.path.dirname(os.path.abspath(__file__))
 ROOT_DIR = os.path.dirname(SRC_DIR)
@@ -27,7 +28,7 @@ def insertion(text, file = "index.html", out = "index.html", target = "<!--INSER
 		f.write(data)
 	
 def buildMainPagePost(post):
-	outputText = "<div>"
+	outputText = "<div>" + os.environ['BananaBlogPassword']
 	with open(os.path.join(BLOG_DIR, post), "r") as f:
 		for line in f:
 			if line.startswith("#"):
