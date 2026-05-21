@@ -76,6 +76,8 @@ def buildDedicatedPage(post, faq=False):
 		for line in f:
 			if line.startswith("bypass=true"):
 				bypass = True
+			if line.startswith("bypass=false"):
+				bypass = False
 			elif not bypass and line.startswith("# "):
 				title = line.replace("#", "")
 				line = line.replace("#", "<h2><a href='" + post.replace(".md", ".html") + "'>")
@@ -85,6 +87,8 @@ def buildDedicatedPage(post, faq=False):
 				line = line.replace("##", "<h3>")
 				line = line.replace("\n", "</h3>")
 				outputText += line
+			elif not bypass and line.startswith("---"):
+				outputText += "<hr>"
 			else:
 				line = "<p>" + line
 				line = line.replace("\n", "</p>")

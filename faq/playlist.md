@@ -29,7 +29,9 @@ Main playlist:
 /music/I Miss You Already + I Haven’t Left Yet [E]/06. Gemini.flac
 #EXTINF:284,Pink Floyd - The Great Gig in the Sky
 /music/The Dark Side of the Moon [E]/05. The Great Gig in the Sky.flac
+bypass=false
 ------
+bypass=true
 Study playlist:
 #EXTM3U
 #PLAYLIST:Study
