@@ -110,14 +110,9 @@ def buildDedicatedPage(post, faq=False):
 	return outputText
 
 def getPlaylist():
-
-	# We pass in the base url, the username, password, and port number
-	# Be sure to use https:// if this is an ssl connection!
 	conn = libopensonic.Connection(os.environ["navidromeServer"] , os.environ["User"] , 
 		os.environ["bananaBlogPassword"] , port=443)
-	# Let's get 2 completely random songs
 	playlists = conn.get_playlists()
-	# We'll just pretty print the results we got to the terminal
 	reviewedID = ""
 	studyID = ""
 	for pl in playlists:
