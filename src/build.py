@@ -113,8 +113,7 @@ def buildDedicatedPage(post, faq=False):
 	return outputText
 
 def getPlaylist():
-	conn = libopensonic.Connection(os.environ["navidromeServer"] , os.environ["User"] , 
-		os.environ["bananaBlogPassword"] , port=443)
+	conn = libopensonic.Connection('https://music.spacebanana.dpdns.org' , 'subway' , 'Ft4DGUnZry5dHZq4KKME' , port=443)
 	playlists = conn.get_playlists()
 	reviewedID = ""
 	studyID = ""
@@ -135,7 +134,13 @@ def getPlaylist():
 		songPlaylist += f"#EXTINF: {song.duration},{song.artist} - {song.title}<br>"
 	
 	return (reviewedPlaylist,songPlaylist)
-		
+
+def copy_playlists():
+	with open (os.path.join(TEMP_DIR, "reviewed.m3u"), "w+", encoding="utf-8") as reviewed:
+		reviewed.write(getPlaylist()[0].replace("<br>","\n"))
+	
+	with open (os.path.join(TEMP_DIR, "study.m3u"), "w+", encoding="utf-8") as study:
+		study.write(getPlaylist()[1].replace("<br>","\n"))
 
 def cleanup():
 	if os.path.exists(TEMP_DIR):
@@ -158,13 +163,15 @@ def main():
 			buildFAQPage(file)
 			buildDedicatedPage(file, faq=True)
 	
+	copy_playlists()
+
 	shutil.copy(os.path.join(TEMPLATE_DIR, "style.css"), PUBLIC_DIR)
 
 	for file in os.listdir(os.path.join(SRC_DIR, "static")):
 		shutil.copy(os.path.join(SRC_DIR, "static", file), PUBLIC_DIR)
 
 	for file in os.listdir(TEMP_DIR):
-		if file.endswith(".html"):
+		if file.endswith(".html") or file.endswith(".m3u"):
 			shutil.copy(os.path.join(TEMP_DIR, file), PUBLIC_DIR)
 
 	cleanup()
