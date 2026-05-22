@@ -113,7 +113,7 @@ def buildDedicatedPage(post, faq=False):
 	return outputText
 
 def getPlaylist():
-	conn = libopensonic.Connection('https://music.spacebanana.dpdns.org' , 'subway' , 'Ft4DGUnZry5dHZq4KKME' , port=443)
+	conn = libopensonic.Connection(os.environ["navidromeServer"] , os.environ["User"] , os.environ["bananaBlogPassword"] , port=443)
 	playlists = conn.get_playlists()
 	reviewedID = ""
 	studyID = ""
