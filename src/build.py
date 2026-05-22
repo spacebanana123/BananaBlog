@@ -136,10 +136,10 @@ def getPlaylist():
 	return (reviewedPlaylist,songPlaylist)
 
 def copy_playlists():
-	with open (os.path.join(TEMP_DIR, "reviewed.m3u"), "w+", encoding="utf-8") as reviewed:
+	with open (os.path.join(TEMP_DIR, "reviewed.m3u8"), "w+", encoding="utf-8") as reviewed:
 		reviewed.write(getPlaylist()[0].replace("<br>","\n"))
 	
-	with open (os.path.join(TEMP_DIR, "study.m3u"), "w+", encoding="utf-8") as study:
+	with open (os.path.join(TEMP_DIR, "study.m3u8"), "w+", encoding="utf-8") as study:
 		study.write(getPlaylist()[1].replace("<br>","\n"))
 
 def cleanup():
@@ -171,7 +171,7 @@ def main():
 		shutil.copy(os.path.join(SRC_DIR, "static", file), PUBLIC_DIR)
 
 	for file in os.listdir(TEMP_DIR):
-		if file.endswith(".html") or file.endswith(".m3u"):
+		if file.endswith(".html") or file.endswith(".m3u8"):
 			shutil.copy(os.path.join(TEMP_DIR, file), PUBLIC_DIR)
 
 	cleanup()
