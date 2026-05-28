@@ -114,7 +114,6 @@ def buildDedicatedPage(post, faq=False):
 
 def getPlaylist():
 	conn = libopensonic.Connection(os.environ["navidromeServer"] , os.environ["User"] , os.environ["bananaBlogPassword"] , port=443)
-	print(os.environ["navidromeServer"]+os.environ["User"]+os.environ["bananaBlogPassword"])
 	playlists = conn.get_playlists()
 	reviewedID = ""
 	studyID = ""
