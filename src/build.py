@@ -111,7 +111,7 @@ def buildDedicatedPage(post, faq=False):
 		insertion(study,file="dedicated.html",out=post.replace(".md", ".html"), target="<!--Saved playlist-->", end="")
 		insertion(datetime.today().strftime('%m-%d-%Y'),file="dedicated.html",out=post.replace(".md", ".html"), target="<!--Date-->", end="")
 	return outputText
-
+#Comment.
 def getPlaylist():
 	conn = libopensonic.Connection(os.environ["navidromeServer"] , os.environ["User"] , os.environ["bananaBlogPassword"] , port=443)
 	playlists = conn.get_playlists()
