@@ -29,7 +29,6 @@ def insertion(text, file = "index.html", out = "index.html", target = "<!--INSER
 		f.write(data)
 	
 def buildMainPagePost(post):
-	#rebuild trigger.
 	outputText = "<div>"
 	with open(os.path.join(BLOG_DIR, post), "r") as f:
 		for line in f:
